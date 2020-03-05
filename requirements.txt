@@ -1,0 +1,2 @@
+git+git://https://github.com/deepmipt/DeepPavlov.git@sorokin/single_pass-elmo
+udapi

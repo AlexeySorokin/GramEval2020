@@ -1,0 +1,105 @@
+{
+    "chainer": {
+        "in": [
+            "x_words"
+        ],
+        "pipe": [
+            {
+                "id": "main",
+                "class_name": "joint_tagger_parser",
+                "tagger": {"config_path": "config/morpho_ru_syntagrus_bert_other.json"},
+                "parser": {"config_path": "config/syntax_ru_syntagrus_convbert_finetuned.json"},
+                "to_output_string": true,
+                "in": [
+                    "x_words"
+                ],
+                "out": [
+                    "y_parsed"
+                ]
+            },
+            {
+                "id": "emoji",
+                "class_name": "emoji_postprocessor",
+                "return_list": false,
+                "in": [
+                    "y_parsed"
+                ],
+                "out": [
+                    "y_parsed_1"
+                ]
+            },
+            {
+                "id": "animacy",
+                "class_name": "adj_animacy_postprocessor",
+                "return_list": false,
+                "is_old": true,
+                "in": [
+                    "y_parsed_1"
+                ],
+                "out": [
+                    "y_parsed_2"
+                ]
+            },
+            {
+                "id": "kotoryj",
+                "class_name": "kotoryj_postprocessor",
+                "return_list": false,
+                "in": [
+                    "y_parsed_2"
+                ],
+                "out": [
+                    "y_parsed_3"
+                ]
+            },
+            {
+                "id": "chto",
+                "class_name": "chto_postprocessor",
+                "return_list": false,
+                "in": [
+                    "y_parsed_3"
+                ],
+                "out": [
+                    "y_parsed_4"
+                ]
+            },
+            {
+                "id": "num",
+                "class_name": "num_postprocessor",
+                "return_list": false,
+                "in": [
+                    "y_parsed_4"
+                ],
+                "out": [
+                    "y_parsed_5"
+                ]
+            },
+            {
+                "id": "digit",
+                "class_name": "simplified_digit_postprocessor",
+                "return_list": false,
+                "in": [
+                    "y_parsed_5"
+                ],
+                "out": [
+                    "y_parsed_6"
+                ]
+            }
+        ],
+        "out": [
+            "y_parsed_6"
+        ]
+    },
+    "metadata": {
+        "variables": {
+            "ROOT_PATH": "~/.deeppavlov",
+            "DOWNLOADS_PATH": "{ROOT_PATH}/downloads",
+            "CONFIGS_PATH": "{DEEPPAVLOV_PATH}/configs",
+            "MODELS_PATH": "{ROOT_PATH}/models"
+        },
+        "requirements": [
+          "{DEEPPAVLOV_PATH}/requirements/tf.txt",
+          "{DEEPPAVLOV_PATH}/requirements/bert_dp.txt",
+          "{DEEPPAVLOV_PATH}/requirements/morpho_tagger.txt"
+        ]
+    }
+}
